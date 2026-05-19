@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Fichier de règles d'alerte
+rule_files:
+  - "alert.rules.yml"
+
+# Alertmanager
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - localhost:9093
+
+# Cibles à scraper (Node Exporter sur chaque machine web)
+scrape_configs:
+  - job_name: 'node'
+    static_configs:
+      - targets:
+          - '192.168.220.132:9100'   # web1
+          - '192.168.220.133:9100'   # web2
+          - '192.168.220.134:9100'   # web3

@@ -1,0 +1,12 @@
+groups:
+  - name: autoscaling_alerts
+    rules:
+      - alert: HighCPU
+        # Déclenche si CPU dépasse 80% pendant plus de 30 secondes
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 80
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Surcharge CPU détectée sur {{ $labels.instance }}"
+          description: "CPU utilisation = {{ $value }}% sur {{ $labels.instance }}"
